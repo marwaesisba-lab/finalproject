@@ -1,0 +1,7 @@
+node_modules/
+client/server/node_modules/
+build/
+.dart_tool/
+.env
+google-services.jsongit commit -m "first commit"
+*.log

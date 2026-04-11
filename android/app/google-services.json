@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "2363741169",
+    "project_id": "marwaappesi",
+    "storage_bucket": "marwaappesi.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:2363741169:android:4d951664246bcee408ea50",
+        "android_client_info": {
+          "package_name": "com.example.appweb"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCCVcgYZcrLgrntKgIvOv8dUz5LLrp4zGk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

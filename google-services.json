@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "667451572591",
+    "project_id": "esisap-8cf42",
+    "storage_bucket": "esisap-8cf42.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:667451572591:android:a6f77dfae741ac5b7d289a",
+        "android_client_info": {
+          "package_name": "com.ESI.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBnJf5rfe_iaTLwDsBEcTx5K3Nxgw3iUfY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
