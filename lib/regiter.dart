@@ -3,6 +3,8 @@ import 'package:appweb/workers/modelworkers.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+const String baseUrl = "http://localhost:5500";
+
 // ================= REGISTER =================
 Future<bool> registerUser({
   required String firstname,
@@ -13,9 +15,11 @@ Future<bool> registerUser({
   required String password,
   required BuildContext context,
 }) async {
-  final url = Uri.parse("http://127.0.0.1:5500/api/usersmagni/auth");
+  final url = Uri.parse("$baseUrl/api/usersmagni/auth");
 
   try {
+    print("📤 Sending REGISTER request to: $url");
+
     final response = await http.post(
       url,
       headers: {"Content-Type": "application/json"},
@@ -29,33 +33,32 @@ Future<bool> registerUser({
       }),
     );
 
-    print("STATUS: ${response.statusCode}");
-    print("BODY: ${response.body}");
+    print("📥 STATUS: ${response.statusCode}");
+    print("📥 BODY: ${response.body}");
 
     if (response.statusCode == 201) {
-      // ه
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text(" you are signed now you can verfie your email only "),
+          content: Text("Account created. Please verify your email."),
           backgroundColor: Colors.green,
         ),
       );
       return true;
     } else {
-      print("REGISTER ERROR: ${response.statusCode} - ${response.body}");
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text("failed to sig in $response.statusCode})"),
+          content: Text("Register failed: ${response.body}"),
           backgroundColor: Colors.red,
         ),
       );
       return false;
     }
   } catch (e) {
-    print("REGISTER EXCEPTION: $e");
+    print("❌ REGISTER EXCEPTION: $e");
+
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text("failed to connect with server"),
+      SnackBar(
+        content: Text("Connection error: $e"),
         backgroundColor: Colors.red,
       ),
     );
@@ -69,50 +72,43 @@ Future<bool> loginUser({
   required String password,
   required BuildContext context,
 }) async {
-  final url = Uri.parse("http://127.0.0.1:5500/api/usersmagni/login");
+  final url = Uri.parse("$baseUrl/api/usersmagni/login");
 
   try {
+    print("📤 Sending LOGIN request to: $url");
+
     final response = await http.post(
       url,
       headers: {"Content-Type": "application/json"},
       body: jsonEncode({"email": email, "password": password}),
     );
 
-    print("STATUS: ${response.statusCode}");
-    print("BODY: ${response.body}");
+    print("📥 STATUS: ${response.statusCode}");
+    print("📥 BODY: ${response.body}");
 
     if (response.statusCode == 200) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text(" yes you are connecting  now "),
+          content: Text("Login successful"),
           backgroundColor: Colors.green,
         ),
       );
       return true;
-    } else if (response.statusCode == 401) {
-      print("LOGIN ERROR: ${response.statusCode} - ${response.body}");
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("email or password are incorrect"),
-          backgroundColor: Colors.orange,
-        ),
-      );
-      return false;
     } else {
-      print("LOGIN ERROR: ${response.statusCode} - ${response.body}");
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text("${response.statusCode}"),
+          content: Text("Login failed: ${response.body}"),
           backgroundColor: Colors.red,
         ),
       );
       return false;
     }
   } catch (e) {
-    print("LOGIN EXCEPTION: $e");
+    print("❌ LOGIN EXCEPTION: $e");
+
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text("failed to connect with server "),
+      SnackBar(
+        content: Text("Connection error: $e"),
         backgroundColor: Colors.red,
       ),
     );
@@ -120,26 +116,30 @@ Future<bool> loginUser({
   }
 }
 
-// fetch workers from data base
+// ================= FETCH WORKERS =================
 Future<List<Worker>> fetchWorkers() async {
+  final url = Uri.parse("$baseUrl/api/users/workers");
   try {
-    final response = await http.get(
-      Uri.parse("http://10.0.2.2:5500/api/users/workers"),
-    );
+    print("📤 Fetching workers from: $url");
 
-    print("HTTP Status: ${response.statusCode}");
-    print("Response Body: ${response.body}");
+    final response = await http.get(url);
+
+    print("📥 STATUS: ${response.statusCode}");
+    print("📥 BODY: ${response.body}");
 
     if (response.statusCode == 200) {
       final List<dynamic> jsonData = json.decode(response.body);
+
+      print("👷 RAW DATA: $jsonData"); // ✅ زيد هذا
+
       return jsonData
           .map<Worker>((e) => Worker.fromJson(Map<String, dynamic>.from(e)))
           .toList();
     } else {
-      throw Exception("Failed to load workers");
+      throw Exception("Server returned ${response.statusCode}");
     }
   } catch (e) {
-    print("FetchWorkers Error: $e");
+    print("❌ FETCH WORKERS ERROR: $e");
     throw Exception("Failed to fetch workers");
   }
 }

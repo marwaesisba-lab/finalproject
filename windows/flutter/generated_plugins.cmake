@@ -9,7 +9,9 @@ list(APPEND FLUTTER_PLUGIN_LIST
   firebase_auth
   firebase_core
   gal
+  geolocator_windows
   media_kit_video
+  permission_handler_windows
   record_windows
   share_plus
   thumblr_windows
